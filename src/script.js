@@ -25,7 +25,7 @@ function preload(){
 
     this.load.image('sky',"./assets/sky.png");
     this.load.image('ground',"./assets/platform.png");
-    this.load.spritesheet("dude", "./assets/dude2.png", {
+    this.load.spritesheet("dude", "./assets/dude3.png", {
         
         frameWidth: 109,
         frameHeight: 66
@@ -52,21 +52,21 @@ function create(){
     
     this.anims.create({
         key: 'left',
-        frame: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 8 }),
         frameRate: 10,
         repeat: -1 // -1 para que se repita infinitamente, puedes ajustar este valor según tus necesidades
     });
 
     this.anims.create({
         key: 'turn',
-        frame: [{key: "dude", frame: 4}],
+        frames: [{key: "dude", frame: 143}],
         frameRate: 20,
         
     });
 
     this.anims.create({
         key: 'right',
-        frame: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+        frames: this.anims.generateFrameNumbers('dude', { start: 135, end: 143 }),
         frameRate: 10,
         repeat: -1 // -1 para que se repita infinitamente, puedes ajustar este valor según tus necesidades
     });
@@ -78,9 +78,40 @@ function create(){
     // seteo del collider
 
     this.physics.add.collider(player, platform);
+
+    // Objeto que contiene la tecla pulsada
+
+    cursors = this.input.keyboard.createCursorKeys();
    
 }
 
 function update(){
+
+    // Condicionales de movimientos
+
+    if(cursors.left.isDown){
+        
+        player.setVelocityX(-250);
+        
+        player.anims.play("left", true);
+    
+    }else if(cursors.right.isDown){
+
+        player.setVelocityX(250);
+        
+        player.anims.play("right", true);
+
+    }else{
+
+        player.setVelocityX(0);
+        
+        player.anims.play("turn", true);
+
+    }
+
+    if(cursors.up.isDown && player.body.touching.down){
+
+        player.setVelocityY(-430);
+    }
     
 }
